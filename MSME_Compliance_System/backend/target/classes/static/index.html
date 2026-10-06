@@ -1,0 +1,3087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ComplyEase | MSME Compliance System</title>
+
+    <style>
+
+        /* ================================
+           RESET
+        ================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: #080d14;
+            color: #f4f7fb;
+            min-height: 100vh;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ================================
+           LAYOUT
+        ================================= */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================================
+           SIDEBAR
+        ================================= */
+
+        .sidebar {
+            width: 255px;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            background: #0b111a;
+            border-right: 1px solid #1d2733;
+
+            padding: 28px 18px;
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 0 12px;
+            margin-bottom: 45px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+
+            border: 1px solid #33465d;
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #76a9ff;
+            background: #101a28;
+        }
+
+        .brand-icon svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .brand-name span {
+            color: #6ea5ff;
+        }
+
+        .nav-title {
+            font-size: 10px;
+            color: #53677f;
+
+            letter-spacing: 2px;
+            font-weight: 700;
+
+            padding: 0 13px;
+            margin-bottom: 12px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            padding: 12px 13px;
+
+            border-radius: 9px;
+
+            color: #8190a3;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: .2s;
+        }
+
+        .nav-item svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .nav-item:hover {
+            background: #121c28;
+            color: #dce8f7;
+        }
+
+        .nav-item.active {
+            background: #172941;
+            color: #83b3ff;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .system-status {
+            border: 1px solid #203040;
+            background: #0e161f;
+
+            border-radius: 10px;
+            padding: 14px;
+
+            margin-bottom: 16px;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            font-size: 11px;
+            color: #8798ad;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #55e59a;
+
+            box-shadow: 0 0 10px rgba(85,229,154,.6);
+        }
+
+        .version {
+            font-size: 10px;
+            color: #445568;
+            padding: 0 14px;
+        }
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        .main {
+            margin-left: 255px;
+            width: calc(100% - 255px);
+
+            min-height: 100vh;
+        }
+
+        /* ================================
+           TOPBAR
+        ================================= */
+
+        .topbar {
+            height: 76px;
+
+            border-bottom: 1px solid #1b2530;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 42px;
+
+            background: rgba(8,13,20,.92);
+            backdrop-filter: blur(12px);
+
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            margin-top: 3px;
+            font-size: 11px;
+            color: #65788e;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .notification {
+            width: 37px;
+            height: 37px;
+
+            border-radius: 9px;
+
+            border: 1px solid #263442;
+            background: #0d151f;
+
+            color: #8fa3ba;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification svg {
+            width: 17px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #1c3557;
+            color: #8db9ff;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .profile-text strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .profile-text span {
+            font-size: 10px;
+            color: #63778e;
+        }
+
+        /* ================================
+           CONTENT
+        ================================= */
+
+        .content {
+            max-width: 1400px;
+            margin: auto;
+            padding: 42px;
+        }
+
+        /* ================================
+           HERO
+        ================================= */
+
+        .hero {
+            border: 1px solid #202d3b;
+
+            border-radius: 18px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 10%,
+                    rgba(60,117,200,.15),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #0e1722,
+                    #0b1119
+                );
+
+            padding: 45px;
+
+            position: relative;
+            overflow: hidden;
+
+            margin-bottom: 25px;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            right: -100px;
+            bottom: -180px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(103,157,232,.12);
+        }
+
+        .hero-label {
+            color: #6fa8ff;
+
+            font-size: 10px;
+            letter-spacing: 3px;
+
+            font-weight: 800;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 4vw, 55px);
+
+            line-height: 1.02;
+
+            max-width: 800px;
+
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            color: #69788b;
+        }
+
+        .hero p {
+            margin-top: 20px;
+
+            color: #8497ad;
+
+            max-width: 650px;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            margin-top: 30px;
+
+            display: flex;
+            gap: 12px;
+        }
+
+        .primary-btn {
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            background: #386eb5;
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .primary-btn:hover {
+            background: #4684d4;
+            transform: translateY(-1px);
+        }
+
+        .secondary-btn {
+            border: 1px solid #2a3949;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
+
+            background: #101923;
+            color: #8ea1b6;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .secondary-btn:hover {
+            border-color: #41658e;
+            color: white;
+        }
+
+        /* ================================
+           STATS
+        ================================= */
+
+        .section-label {
+            font-size: 10px;
+
+            color: #536c87;
+
+            letter-spacing: 2.5px;
+
+            font-weight: 800;
+
+            margin: 32px 0 14px;
+        }
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+        }
+
+        .stat-card {
+            background: #0d151e;
+
+            border: 1px solid #202c39;
+
+            border-radius: 13px;
+
+            padding: 22px;
+
+            transition: .2s;
+        }
+
+        .stat-card:hover {
+            border-color: #304760;
+            transform: translateY(-2px);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            color: #71849a;
+
+            font-size: 11px;
+        }
+
+        .stat-icon {
+            width: 31px;
+            height: 31px;
+
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #142237;
+
+            color: #72a8ff;
+        }
+
+        .stat-icon svg {
+            width: 16px;
+        }
+
+        .stat-number {
+            margin-top: 17px;
+
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .stat-change {
+            margin-top: 7px;
+
+            font-size: 10px;
+
+            color: #5a7088;
+        }
+
+        .stat-change.good {
+            color: #55c990;
+        }
+
+        .stat-change.warning {
+            color: #e4b467;
+        }
+
+        /* ================================
+           GRID
+        ================================= */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.5fr 1fr;
+
+            gap: 16px;
+
+            margin-top: 16px;
+        }
+
+        .panel {
+            border: 1px solid #202c39;
+
+            border-radius: 14px;
+
+            background: #0d151e;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 22px;
+
+            border-bottom: 1px solid #1c2733;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .panel-description {
+            margin-top: 4px;
+
+            font-size: 10px;
+
+            color: #60748a;
+        }
+
+        .view-all {
+            color: #6599df;
+
+            font-size: 10px;
+            text-decoration: none;
+
+            font-weight: 700;
+        }
+
+        /* ================================
+           COMPLIANCE LIST
+        ================================= */
+
+        .compliance-list {
+            padding: 5px 22px 15px;
+        }
+
+        .compliance-item {
+            display: grid;
+
+            grid-template-columns: 42px 1fr auto;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 16px 0;
+
+            border-bottom: 1px solid #17212c;
+        }
+
+        .compliance-item:last-child {
+            border-bottom: none;
+        }
+
+        .compliance-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 9px;
+
+            background: #142237;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #76aaff;
+        }
+
+        .compliance-icon svg {
+            width: 18px;
+        }
+
+        .compliance-name {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .compliance-meta {
+            margin-top: 4px;
+
+            font-size: 10px;
+
+            color: #60748a;
+        }
+
+        .badge {
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            letter-spacing: .4px;
+        }
+
+        .badge.upcoming {
+            color: #80b2ff;
+            background: #132640;
+        }
+
+        .badge.completed {
+            color: #5be09b;
+            background: #10271e;
+        }
+
+        .badge.overdue {
+            color: #f08b8b;
+            background: #301719;
+        }
+
+        /* ================================
+           DEADLINES
+        ================================= */
+
+        .deadline-list {
+            padding: 8px 22px 18px;
+        }
+
+        .deadline {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid #17212c;
+        }
+
+        .date-box {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 9px;
+
+            background: #142237;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-box strong {
+            font-size: 14px;
+        }
+
+        .date-box span {
+            font-size: 8px;
+
+            color: #6f88a3;
+
+            letter-spacing: 1px;
+        }
+
+        .deadline-info {
+            flex: 1;
+        }
+
+        .deadline-info strong {
+            font-size: 11px;
+        }
+
+        .deadline-info span {
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 9px;
+
+            color: #63768a;
+        }
+
+        .days-left {
+            font-size: 9px;
+            color: #dfad62;
+        }
+
+        /* ================================
+           BUSINESS SECTION
+        ================================= */
+
+        .business-section {
+            margin-top: 16px;
+        }
+
+        .business-content {
+            padding: 22px;
+        }
+
+        .business-form {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-size: 10px;
+
+            color: #8ea0b4;
+
+            margin-bottom: 7px;
+
+            font-weight: 700;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #273543;
+
+            border-radius: 8px;
+
+            background: #101820;
+
+            color: #e4ebf4;
+
+            outline: none;
+
+            font-size: 11px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #4b79ae;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(75,121,174,.1);
+        }
+
+        .form-submit {
+            margin-top: 18px;
+        }
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            margin-top: 45px;
+
+            padding: 22px 0;
+
+            border-top: 1px solid #1b2631;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            color: #52667c;
+
+            font-size: 9px;
+
+            letter-spacing: 1px;
+        }
+
+        footer strong {
+            color: #769bd0;
+        }
+
+        /* ================================
+           TOAST
+        ================================= */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            padding: 14px 18px;
+
+            border-radius: 9px;
+
+            background: #142131;
+
+            border: 1px solid #304a66;
+
+            color: #b9d4f5;
+
+            font-size: 11px;
+
+            transform: translateY(100px);
+
+            opacity: 0;
+
+            transition: .3s;
+
+            z-index: 999;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width: 1050px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 800px) {
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 9px;
+            }
+
+            .brand {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .brand-name,
+            .nav-title,
+            .nav-item span,
+            .system-status,
+            .version {
+                display: none;
+            }
+
+            .nav-item {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 22px;
+            }
+
+            .hero {
+                padding: 30px 25px;
+            }
+
+            .business-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-text {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <path d="M4 19V9"/>
+                    <path d="M9 19V5"/>
+                    <path d="M14 19v-8"/>
+                    <path d="M19 19V3"/>
+
+                </svg>
+
+            </div>
+
+            <div class="brand-name">
+                COMPLY<span>EASE</span>
+            </div>
+
+        </div>
+
+
+        <div class="nav-title">
+            WORKSPACE
+        </div>
+
+
+        <nav class="nav">
+
+            <a href="#dashboard"
+               class="nav-item active">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <rect x="3" y="3"
+                          width="7" height="7"/>
+
+                    <rect x="14" y="3"
+                          width="7" height="7"/>
+
+                    <rect x="3" y="14"
+                          width="7" height="7"/>
+
+                    <rect x="14" y="14"
+                          width="7" height="7"/>
+
+                </svg>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="#business"
+               class="nav-item">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <path d="M3 21h18"/>
+                    <path d="M5 21V5l7-3 7 3v16"/>
+                    <path d="M9 9h6"/>
+                    <path d="M9 13h6"/>
+                    <path d="M9 17h6"/>
+
+                </svg>
+
+                <span>Business</span>
+
+            </a>
+
+
+            <a href="#compliance"
+               class="nav-item">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <rect x="4" y="3"
+                          width="16" height="18"
+                          rx="2"/>
+
+                    <path d="M8 8h8"/>
+                    <path d="M8 12h8"/>
+                    <path d="M8 16h5"/>
+
+                </svg>
+
+                <span>Compliances</span>
+
+            </a>
+
+
+            <a href="#deadlines"
+               class="nav-item">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <circle cx="12" cy="12" r="9"/>
+
+                    <path d="M12 7v5l3 2"/>
+
+                </svg>
+
+                <span>Deadlines</span>
+
+            </a>
+
+
+            <a href="#reports"
+               class="nav-item">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <path d="M4 19V5"/>
+                    <path d="M4 19h16"/>
+
+                    <path d="M7 15l3-4 3 2 5-6"/>
+
+                </svg>
+
+                <span>Reports</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+
+                <div class="status-row">
+
+                    <span class="status-dot"></span>
+
+                    SYSTEM ONLINE
+
+                </div>
+
+            </div>
+
+            <div class="version">
+                COMPLYEASE v1.0
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="page-title">
+                    Compliance Dashboard
+                </div>
+
+                <div class="page-subtitle">
+                    Monitor your MSME regulatory obligations
+                </div>
+
+            </div>
+
+
+            <div class="top-right">
+
+                <button class="notification"
+                        onclick="loadNotifications()">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
+
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+
+                    </svg>
+
+                </button>
+
+
+                <div class="profile">
+
+                    <div class="avatar">
+                        CE
+                    </div>
+
+                    <div class="profile-text" onclick="showAdminInfo()" style="cursor:pointer;">
+
+                        <strong>Admin</strong>
+
+                        <span>Business Owner</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- HERO -->
+
+            <section class="hero"
+                     id="dashboard">
+
+                <div class="hero-label">
+                    SMART COMPLIANCE MANAGEMENT
+                </div>
+
+                <h1>
+                    Stay compliant,
+                    <span>without the stress.</span>
+                </h1>
+
+                <p>
+                    Manage your business registrations, statutory
+                    obligations, deadlines and compliance status
+                    from one centralized workspace.
+                </p>
+
+
+                <div class="hero-actions">
+
+                    <button class="primary-btn"
+                            onclick="scrollToSection('business')">
+
+                        + Register Business
+
+                    </button>
+
+
+                    <button class="secondary-btn"
+                            onclick="scrollToSection('compliance')">
+
+                        View Compliance
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- STATISTICS -->
+
+            <div class="section-label">
+                COMPLIANCE OVERVIEW
+            </div>
+
+
+            <section class="stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Total Compliances
+                        </span>
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <path d="M8 6h13"/>
+                                <path d="M8 12h13"/>
+                                <path d="M8 18h13"/>
+                                <path d="M3 6h.01"/>
+                                <path d="M3 12h.01"/>
+                                <path d="M3 18h.01"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-number"
+                         id="totalCompliance">
+
+                        08
+
+                    </div>
+
+                    <div class="stat-change">
+                        Registered obligations
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Completed
+                        </span>
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <path d="M20 6L9 17l-5-5"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-number">
+                        05
+                    </div>
+
+                    <div class="stat-change good">
+                        62.5% completed
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Upcoming
+                        </span>
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <circle cx="12"
+                                        cy="12"
+                                        r="9"/>
+
+                                <path d="M12 7v5l3 2"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-number">
+                        02
+                    </div>
+
+                    <div class="stat-change warning">
+                        Due within 30 days
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span>
+                            Overdue
+                        </span>
+
+                        <div class="stat-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <path d="M12 3l9 18H3L12 3z"/>
+                                <path d="M12 9v4"/>
+                                <path d="M12 17h.01"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat-number">
+                        01
+                    </div>
+
+                    <div class="stat-change warning">
+                        Requires attention
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- TWO COLUMN -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- COMPLIANCES -->
+
+                <div class="panel"
+                     id="compliance">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Compliance Status
+                            </div>
+
+                            <div class="panel-description">
+                                Current regulatory obligations
+                            </div>
+
+                        </div>
+
+                        <a href="#"
+                           class="view-all">
+                            VIEW ALL →
+                        </a>
+
+                    </div>
+
+
+                    <div class="compliance-list">
+
+
+                        <div class="compliance-item">
+
+                            <div class="compliance-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
+
+                                    <rect x="4" y="3"
+                                          width="16"
+                                          height="18"
+                                          rx="2"/>
+
+                                    <path d="M8 8h8"/>
+                                    <path d="M8 12h8"/>
+                                    <path d="M8 16h5"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="compliance-name">
+                                    GST Return Filing
+                                </div>
+
+                                <div class="compliance-meta">
+                                    Monthly tax return · Due 20 Oct 2026
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge upcoming">
+                                UPCOMING
+                            </span>
+
+                        </div>
+
+
+                        <div class="compliance-item">
+
+                            <div class="compliance-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
+
+                                    <path d="M4 20V4"/>
+                                    <path d="M4 20h16"/>
+                                    <path d="M8 16v-5"/>
+                                    <path d="M12 16V8"/>
+                                    <path d="M16 16v-8"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="compliance-name">
+                                    Income Tax Filing
+                                </div>
+
+                                <div class="compliance-meta">
+                                    Annual return · Completed
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge completed">
+                                COMPLETED
+                            </span>
+
+                        </div>
+
+
+                        <div class="compliance-item">
+
+                            <div class="compliance-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
+
+                                    <path d="M4 21V5l8-3 8 3v16"/>
+                                    <path d="M8 10h8"/>
+                                    <path d="M8 14h8"/>
+                                    <path d="M8 18h8"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="compliance-name">
+                                    Trade License Renewal
+                                </div>
+
+                                <div class="compliance-meta">
+                                    Annual renewal · Due 05 Nov 2026
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge upcoming">
+                                UPCOMING
+                            </span>
+
+                        </div>
+
+
+                        <div class="compliance-item">
+
+                            <div class="compliance-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2">
+
+                                    <circle cx="12"
+                                            cy="12"
+                                            r="9"/>
+
+                                    <path d="M12 7v5"/>
+                                    <path d="M12 16h.01"/>
+
+                                </svg>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="compliance-name">
+                                    Professional Tax
+                                </div>
+
+                                <div class="compliance-meta">
+                                    Quarterly payment · Past due
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge overdue">
+                                OVERDUE
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DEADLINES -->
+
+                <div class="panel"
+                     id="deadlines">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Upcoming Deadlines
+                            </div>
+
+                            <div class="panel-description">
+                                Next compliance activities
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="deadline-list">
+
+
+                        <div class="deadline">
+
+                            <div class="date-box">
+
+                                <strong>20</strong>
+                                <span>OCT</span>
+
+                            </div>
+
+                            <div class="deadline-info">
+
+                                <strong>
+                                    GST Return
+                                </strong>
+
+                                <span>
+                                    Monthly filing
+                                </span>
+
+                            </div>
+
+                            <span class="days-left">
+                                22 DAYS
+                            </span>
+
+                        </div>
+
+
+                        <div class="deadline">
+
+                            <div class="date-box">
+
+                                <strong>05</strong>
+                                <span>NOV</span>
+
+                            </div>
+
+                            <div class="deadline-info">
+
+                                <strong>
+                                    Trade License
+                                </strong>
+
+                                <span>
+                                    Annual renewal
+                                </span>
+
+                            </div>
+
+                            <span class="days-left">
+                                38 DAYS
+                            </span>
+
+                        </div>
+
+
+                        <div class="deadline">
+
+                            <div class="date-box">
+
+                                <strong>15</strong>
+                                <span>DEC</span>
+
+                            </div>
+
+                            <div class="deadline-info">
+
+                                <strong>
+                                    PF Contribution
+                                </strong>
+
+                                <span>
+                                    Monthly payment
+                                </span>
+
+                            </div>
+
+                            <span class="days-left">
+                                78 DAYS
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- BUSINESS -->
+
+            <section class="panel business-section"
+                     id="business">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-title">
+                            Business Registration
+                        </div>
+
+                        <div class="panel-description">
+                            Add your MSME business details
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="business-content">
+
+                    <form id="businessForm">
+
+                        <div class="business-form">
+
+
+                           <div class="form-group">
+
+    <label>
+        EMAIL
+    </label>
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter email address"
+        required>
+
+</div>
+
+<div class="form-group">
+
+    <label>
+        BUSINESS NAME
+    </label>
+
+    <input
+        type="text"
+        id="businessName"
+        placeholder="Enter business name"
+        required>
+
+</div>
+<div class="form-group">
+
+    <label>
+        PHONE
+    </label>
+
+    <input
+        type="tel"
+        id="phone"
+        placeholder="Enter phone number"
+        required>
+
+</div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    OWNER NAME
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="ownerName"
+                                    placeholder="Enter owner name"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    BUSINESS TYPE
+                                </label>
+
+                                <select id="businessType">
+
+                                    <option value="">
+                                        Select business type
+                                    </option>
+
+                                    <option>
+                                        Micro Enterprise
+                                    </option>
+
+                                    <option>
+                                        Small Enterprise
+                                    </option>
+
+                                    <option>
+                                        Medium Enterprise
+                                    </option>
+
+                                    <option>
+                                        Partnership
+                                    </option>
+
+                                    <option>
+                                        Private Limited
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            
+
+
+        
+
+                        <div class="form-submit">
+
+                            <button
+                                type="submit"
+                                class="primary-btn">
+
+                                Register Business →
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </section>
+<!-- COMPLIANCE MANAGEMENT -->
+
+<section class="panel business-section"
+         id="compliance">
+
+    <div class="panel-header">
+
+        <div>
+
+            <div class="panel-title">
+                Compliance Management
+            </div>
+
+            <div class="panel-description">
+                Add and track your MSME compliance requirements
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="business-content">
+
+        <form id="complianceForm">
+
+            <div class="business-form">
+
+                <!-- COMPLIANCE NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        COMPLIANCE NAME
+                    </label>
+
+                    <input
+                        type="text"
+                        id="complianceName"
+                        placeholder="Enter compliance name"
+                        required>
+
+                </div>
+
+
+                <!-- DUE DATE -->
+
+                <div class="form-group">
+
+                    <label>
+                        DUE DATE
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dueDate"
+                        required>
+
+                </div>
+
+
+                <!-- FREQUENCY -->
+
+                <div class="form-group">
+
+                    <label>
+                        FREQUENCY
+                    </label>
+
+                    <select id="frequency" required>
+
+                        <option value="">
+                            Select frequency
+                        </option>
+
+                        <option value="Monthly">
+                            Monthly
+                        </option>
+
+                        <option value="Quarterly">
+                            Quarterly
+                        </option>
+
+                        <option value="Half-Yearly">
+                            Half-Yearly
+                        </option>
+
+                        <option value="Yearly">
+                            Yearly
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label>
+                        STATUS
+                    </label>
+
+                    <select id="status" required>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Completed">
+                            Completed
+                        </option>
+
+                        <option value="Overdue">
+                            Overdue
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PENALTY -->
+
+                <div class="form-group">
+
+                    <label>
+                        PENALTY AMOUNT
+                    </label>
+
+                    <input
+                        type="number"
+                        id="penaltyAmount"
+                        placeholder="Enter penalty amount"
+                        min="0"
+                        required>
+
+                </div>
+
+
+                <!-- BUSINESS ID -->
+
+                <div class="form-group">
+
+                    <label>
+                        BUSINESS ID
+                    </label>
+
+                    <input
+                        type="number"
+                        id="businessId"
+                        value="1"
+                        min="1"
+                        required>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <div class="form-submit">
+
+                    <button
+                        type="submit"
+                        class="primary-btn">
+
+                        Add Compliance →
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+<!-- UPCOMING COMPLIANCES -->
+
+<section class="panel business-section"
+         id="deadlines">
+
+    <div class="panel-header">
+
+        <div>
+
+            <div class="panel-title">
+                Upcoming Compliance Deadlines
+            </div>
+
+            <div class="panel-description">
+                Track your upcoming MSME compliance requirements
+            </div>
+<div style="
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+    flex-wrap:wrap;
+">
+
+    <input
+        type="text"
+        id="searchCompliance"
+        placeholder="Search compliance..."
+        oninput="filterCompliances()"
+        style="
+            flex:1;
+            min-width:200px;
+            padding:10px;
+            border:1px solid #1d2b3a;
+            border-radius:6px;
+            background:#0d1722;
+            color:white;
+        "
+    >
+
+    <select
+        id="statusFilter"
+        onchange="filterCompliances()"
+        style="
+            padding:10px;
+            border:1px solid #1d2b3a;
+            border-radius:6px;
+            background:#0d1722;
+            color:white;
+        "
+    >
+        <option value="">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Completed">Completed</option>
+        <option value="Overdue">Overdue</option>
+    </select>
+
+    <select
+        id="frequencyFilter"
+        onchange="filterCompliances()"
+        style="
+            padding:10px;
+            border:1px solid #1d2b3a;
+            border-radius:6px;
+            background:#0d1722;
+            color:white;
+        "
+    >
+        <option value="">All Frequency</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Quarterly">Quarterly</option>
+        <option value="Half-Yearly">Half-Yearly</option>
+        <option value="Yearly">Yearly</option>
+    </select>
+
+</div>
+        </div>
+
+    </div>
+
+
+    <div class="business-content">
+
+        <div id="complianceList">
+
+            <p style="
+                color:#60748a;
+                font-size:12px;
+            ">
+                Loading compliance records...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+            <!-- REPORT -->
+
+            <section class="panel business-section"
+                     id="reports">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <div class="panel-title">
+                            Compliance Health
+                        </div>
+
+                        <div class="panel-description">
+                            Overall compliance monitoring
+                        </div>
+
+                    </div>
+
+                    <span class="badge completed">
+                        82% HEALTHY
+                    </span>
+
+                </div>
+
+
+                <div class="business-content">
+
+                    <div style="
+                        height:8px;
+                        width:100%;
+                        background:#18232f;
+                        border-radius:10px;
+                        overflow:hidden;
+                    ">
+
+                        <div style="
+                            width:82%;
+                            height:100%;
+                            background:#5d94e5;
+                            border-radius:10px;
+                        "></div>
+
+                    </div>
+
+
+                    <p style="
+                        margin-top:14px;
+                        font-size:10px;
+                        color:#60748a;
+                    ">
+
+                        Your business currently has a healthy
+                        compliance status. Complete the overdue
+                        Professional Tax payment to improve your
+                        compliance score.
+
+                    </p>
+
+                </div>
+
+            </section>
+<!-- COMPLIANCE REPORT SUMMARY -->
+
+<section class="panel business-section" id="reportSummary">
+
+    <div class="panel-header">
+        <div>
+            <div class="panel-title">Compliance Summary Report</div>
+            <div class="panel-description">
+                Overview of your current compliance status
+            </div>
+        </div>
+    </div>
+
+    <div class="business-content">
+
+        <div style="
+            display:grid;
+            grid-template-columns:repeat(4, 1fr);
+            gap:15px;
+        ">
+
+            <div style="
+                padding:20px;
+                border:1px solid #1d2b3a;
+                border-radius:10px;
+                background:#0d1722;
+            ">
+                <div style="color:#8da2b8;font-size:12px;">
+                    Total Compliances
+                </div>
+
+                <div id="reportTotal"
+                     style="
+                     margin-top:8px;
+                     color:#ffffff;
+                     font-size:26px;
+                     font-weight:bold;
+                     ">
+                    0
+                </div>
+            </div>
+
+
+            <div style="
+                padding:20px;
+                border:1px solid #1d2b3a;
+                border-radius:10px;
+                background:#0d1722;
+            ">
+                <div style="color:#8da2b8;font-size:12px;">
+                    Completed
+                </div>
+
+                <div id="reportCompleted"
+                     style="
+                     margin-top:8px;
+                     color:#35d07f;
+                     font-size:26px;
+                     font-weight:bold;
+                     ">
+                    0
+                </div>
+            </div>
+
+
+            <div style="
+                padding:20px;
+                border:1px solid #1d2b3a;
+                border-radius:10px;
+                background:#0d1722;
+            ">
+                <div style="color:#8da2b8;font-size:12px;">
+                    Pending
+                </div>
+
+                <div id="reportPending"
+                     style="
+                     margin-top:8px;
+                     color:#f5c542;
+                     font-size:26px;
+                     font-weight:bold;
+                     ">
+                    0
+                </div>
+            </div>
+
+
+            <div style="
+                padding:20px;
+                border:1px solid #1d2b3a;
+                border-radius:10px;
+                background:#0d1722;
+            ">
+                <div style="color:#8da2b8;font-size:12px;">
+                    Overdue
+                </div>
+
+                <div id="reportOverdue"
+                     style="
+                     margin-top:8px;
+                     color:#ff5c5c;
+                     font-size:26px;
+                     font-weight:bold;
+                     ">
+                    0
+                </div>
+            </div>
+
+        </div>
+
+
+        <div style="
+            margin-top:15px;
+            padding:18px;
+            border:1px solid #1d2b3a;
+            border-radius:10px;
+            background:#0d1722;
+        ">
+
+            <div style="color:#8da2b8;font-size:12px;">
+                Total Penalty Amount
+            </div>
+
+            <div id="reportPenalty"
+                 style="
+                 margin-top:8px;
+                 color:#ffffff;
+                 font-size:24px;
+                 font-weight:bold;
+                 ">
+                ₹0
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+            <!-- FOOTER -->
+
+            <footer>
+
+                <div>
+                    © 2026 <strong>COMPLYEASE</strong>
+                </div>
+
+                <div>
+                    MSME COMPLIANCE MANAGEMENT SYSTEM
+                </div>
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast"
+     id="toast">
+</div>
+
+
+<script>
+
+    /* =================================
+       SMOOTH SCROLL
+    ================================= */
+
+    function scrollToSection(id) {
+
+        document
+            .getElementById(id)
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+
+
+    /* =================================
+       TOAST
+    ================================= */
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        toast.textContent = message;
+
+        toast.classList.add("show");
+
+        setTimeout(() => {
+
+            toast.classList.remove("show");
+
+        }, 3000);
+
+    }
+
+
+    /* =================================
+   BUSINESS REGISTRATION
+================================= */
+
+document
+    .getElementById("businessForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const businessData = {
+
+            businessName:
+                document.getElementById("businessName").value.trim(),
+
+            ownerName:
+                document.getElementById("ownerName").value.trim(),
+
+            businessType:
+                document.getElementById("businessType").value,
+
+            email:
+                document.getElementById("email").value.trim(),
+
+            phone:
+                document.getElementById("phone").value.trim()
+        };
+
+
+        try {
+
+            const response = await fetch("/api/businesses", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(businessData)
+
+            });
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to register business"
+                );
+
+            }
+
+
+            const savedBusiness =
+                await response.json();
+
+
+            console.log(
+                "Business saved:",
+                savedBusiness
+            );
+
+
+            showToast(
+                "Business registered successfully!"
+            );
+
+
+            this.reset();
+
+
+            // Refresh business list
+            loadBusinesses();
+
+
+        }
+
+        catch(error) {
+
+            console.error(
+                "Registration error:",
+                error
+            );
+
+
+            showToast(
+                "Unable to register business."
+            );
+
+        }
+
+    });
+
+
+/* =================================
+   LOAD BUSINESSES FROM BACKEND
+================================= */
+
+async function loadBusinesses() {
+
+    try {
+
+        const response =
+            await fetch("/api/businesses");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Backend request failed"
+            );
+
+        }
+
+
+        const businesses =
+            await response.json();
+
+
+        console.log(
+            "Businesses from Spring Boot:",
+            businesses
+        );
+
+    }
+
+    catch(error) {
+
+        console.log(
+            "Backend connection:",
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =================================
+   START
+================================= */
+
+loadBusinesses();
+
+    /* =================================
+       LOAD BUSINESSES FROM BACKEND
+    ================================= */
+
+    async function loadBusinesses() {
+
+        try {
+
+            const response =
+                await fetch("/api/businesses");
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Backend request failed"
+                );
+
+            }
+
+            const businesses =
+                await response.json();
+
+            console.log(
+                "Businesses from Spring Boot:",
+                businesses
+            );
+
+        }
+
+        catch(error) {
+
+            console.log(
+                "Backend connection:",
+                error.message
+            );
+
+        }
+
+    }
+
+
+    /* =================================
+       START
+    ================================= */
+
+    loadBusinesses();
+
+/* =================================
+   COMPLIANCE MANAGEMENT
+================================= */
+
+document
+    .getElementById("complianceForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const complianceData = {
+
+            complianceName:
+                document.getElementById("complianceName").value.trim(),
+
+            dueDate:
+                document.getElementById("dueDate").value,
+
+            frequency:
+                document.getElementById("frequency").value,
+
+            status:
+                document.getElementById("status").value,
+
+            penaltyAmount:
+                Number(
+                    document.getElementById("penaltyAmount").value
+                ),
+
+            business: {
+
+                id: Number(
+                    document.getElementById("businessId").value
+                )
+
+            }
+
+        };
+
+
+        try {
+
+            const response = await fetch(
+                "/api/compliances",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(complianceData)
+
+                }
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to add compliance"
+                );
+
+            }
+
+
+            const savedCompliance =
+                await response.json();
+
+
+            console.log(
+                "Compliance saved:",
+                savedCompliance
+            );
+
+
+            showToast(
+                "Compliance added successfully!"
+            );
+
+
+            this.reset();
+
+
+            // Keep Business ID as 1
+            document.getElementById("businessId").value = 1;
+
+        }
+
+        catch(error) {
+
+            console.error(
+                "Compliance error:",
+                error
+            );
+
+
+            showToast(
+                "Unable to add compliance."
+            );
+
+        }
+
+    });
+    /* =================================
+   LOAD COMPLIANCE DEADLINES
+================================= */
+
+async function loadCompliances() {
+
+    try {
+
+        const response =
+            await fetch("/api/compliances");
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load compliances"
+            );
+
+        }
+
+        const compliances =
+            await response.json();
+
+        const complianceList =
+            document.getElementById("complianceList");
+
+
+        if (compliances.length === 0) {
+
+            complianceList.innerHTML = `
+                <p style="color:#60748a;font-size:12px;">
+                    No compliance records found.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        complianceList.innerHTML = compliances.map(
+            compliance => `
+
+                <div style="
+                    padding:16px;
+                    margin-bottom:12px;
+                    border:1px solid #1d2b3a;
+                    border-radius:10px;
+                    background:#0d1722;
+                ">
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:10px;
+                    ">
+
+                        <strong style="
+                            color:#ffffff;
+                            font-size:14px;
+                        ">
+                            ${compliance.complianceName}
+                        </strong>
+
+                        <span style="
+    color:${
+        compliance.status === "Completed"
+            ? "#35d07f"
+            : compliance.status === "Overdue"
+                ? "#ff5c5c"
+                : "#f5c542"
+    };
+    font-size:11px;
+    font-weight:bold;
+">
+    ${compliance.status}
+</span>
+
+                    </div>
+
+
+                    <div style="
+                        display:grid;
+                        grid-template-columns:
+                        repeat(3, 1fr);
+                        gap:10px;
+                        color:#8da2b8;
+                        font-size:11px;
+                    ">
+
+                        <div>
+                            <strong>Due Date</strong><br>
+                            ${compliance.dueDate}
+                        </div>
+
+                        <div>
+                            <strong>Frequency</strong><br>
+                            ${compliance.frequency}
+                        </div>
+
+                        <div>
+                           <strong>Penalty</strong><br>
+₹${compliance.penaltyAmount}
+                        </div>
+                        <div style="margin-top:10px;">
+    <strong>Late Penalty</strong><br>
+    <span id="penalty-${compliance.id}">₹0</span>
+</div>
+
+                    </div>
+${compliance.status !== "Completed" ? `
+    <button
+        onclick="markComplianceCompleted(${compliance.id})"
+        style="
+            margin-top:12px;
+            padding:8px 14px;
+            border:none;
+            border-radius:6px;
+            background:#5d94e5;
+            color:white;
+            font-size:11px;
+            font-weight:bold;
+            cursor:pointer;
+        ">
+        Mark as Completed
+    </button>
+` : `
+    <span style="
+        display:inline-block;
+        margin-top:12px;
+        color:#35d07f;
+        font-size:11px;
+        font-weight:bold;
+    ">
+        ✓ Completed
+    </span>
+`}
+                </div>
+
+            `
+        ).join("");
+loadCalculatedPenalties(compliances);
+
+    } catch(error) {
+
+        console.error(
+            "Compliance loading error:",
+            error
+        );
+
+    }
+
+}
+/* =================================
+   MARK COMPLIANCE AS COMPLETED
+================================= */
+
+async function markComplianceCompleted(id) {
+
+    try {
+
+        const response = await fetch(
+            `/api/compliances/${id}/complete`,
+            {
+                method: "PUT"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update compliance");
+        }
+
+        showToast(
+            "Compliance marked as completed!"
+        );
+
+        loadCompliances();
+
+    } catch(error) {
+
+        console.error(
+            "Completion error:",
+            error
+        );
+
+        showToast(
+            "Unable to update compliance."
+        );
+
+    }
+
+}
+async function loadCalculatedPenalties(compliances) {
+
+    for (const compliance of compliances) {
+
+        try {
+
+            const response = await fetch(
+                `/api/compliances/${compliance.id}/penalty`
+            );
+
+            const penalty = await response.json();
+
+            const penaltyElement =
+                document.getElementById(
+                    `penalty-${compliance.id}`
+                );
+
+            if (penaltyElement) {
+                penaltyElement.textContent =
+                    `₹${penalty}`;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Penalty calculation error:",
+                error
+            );
+
+        }
+    }
+}
+loadCompliances();
+function filterCompliances() {
+
+    const search =
+        document.getElementById("searchCompliance")
+            .value.toLowerCase();
+
+    const status =
+        document.getElementById("statusFilter").value;
+
+    const frequency =
+        document.getElementById("frequencyFilter").value;
+
+    const cards =
+        document.querySelectorAll("#complianceList > div");
+
+    cards.forEach(card => {
+
+        const name =
+            card.querySelector("strong")
+                ?.textContent.toLowerCase() || "";
+
+        const cardText =
+            card.textContent;
+
+        const matchesSearch =
+            name.includes(search);
+
+        const matchesStatus =
+            !status || cardText.includes(status);
+
+        const matchesFrequency =
+            !frequency || cardText.includes(frequency);
+
+        card.style.display =
+            matchesSearch &&
+            matchesStatus &&
+            matchesFrequency
+                ? "block"
+                : "none";
+    });
+}
+/* =================================
+   COMPLIANCE REPORT SUMMARY
+================================= */
+
+async function loadReportSummary() {
+
+    try {
+
+        const response = await fetch("/api/compliances");
+
+        if (!response.ok) {
+            throw new Error("Failed to load report data");
+        }
+
+        const compliances = await response.json();
+
+        let total = compliances.length;
+        let completed = 0;
+        let pending = 0;
+        let overdue = 0;
+        let totalPenalty = 0;
+
+        compliances.forEach(compliance => {
+
+            if (compliance.status === "Completed") {
+                completed++;
+            }
+
+            else if (compliance.status === "Pending") {
+                pending++;
+            }
+
+            else if (compliance.status === "Overdue") {
+                overdue++;
+            }
+
+            totalPenalty += Number(compliance.penaltyAmount || 0);
+
+        });
+
+        document.getElementById("reportTotal").textContent = total;
+        document.getElementById("reportCompleted").textContent = completed;
+        document.getElementById("reportPending").textContent = pending;
+        document.getElementById("reportOverdue").textContent = overdue;
+
+        document.getElementById("reportPenalty").textContent =
+            "₹" + totalPenalty.toLocaleString("en-IN");
+
+    } catch (error) {
+
+        console.error(
+            "Report summary error:",
+            error
+        );
+
+    }
+}
+
+loadReportSummary();
+async function loadNotifications() {
+
+    try {
+
+        const response = await fetch("/api/reminders");
+
+        if (!response.ok) {
+            throw new Error("Failed to load reminders");
+        }
+
+        const reminders = await response.json();
+
+        if (reminders.length === 0) {
+            showToast("No new notifications");
+            return;
+        }
+
+        reminders.forEach(reminder => {
+            showToast(reminder);
+        });
+
+    } catch (error) {
+
+        console.error("Notification error:", error);
+
+        showToast("Unable to load notifications.");
+    }
+}
+function showAdminInfo() {
+
+    showToast(
+        "Admin: Business Owner | ComplyEase Administrator"
+    );
+
+}
+</script>
+
+</body>
+</html>
